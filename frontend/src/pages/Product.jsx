@@ -2,14 +2,16 @@ import React, { useEffect ,useState,useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { assets } from '../assets/assets';
 import { ShopContext } from '../context/ShopContext';
+import RelatedProducts from '../components/RelatedProducts';
 
 const Product = () => {
 
    const {productId}=useParams();
-   const {products,currency}=useContext(ShopContext);
+   const {products,currency,addToCart}=useContext(ShopContext);
    const [productData,setProductData]=useState(false);
    const [image,setImage]=useState("");
-   console.log(productId);
+   const [size,setSize]=useState("");
+   
 
    const fetchProductData= async ()=>{
    products.map((item)=>{
@@ -17,7 +19,7 @@ const Product = () => {
     {
       setProductData(item);
       setImage(item.image[0]);
-      console.log(item);
+     
       return null
     }
    })
@@ -44,7 +46,7 @@ const Product = () => {
           </div>
           </div>
           {/*product info*/}
-          <div className="flex-1 border">
+          <div className="flex-1 min-h-[380px] border">
             <h1 className="font-medium text-2xl mt-2">
               {productData.name}
             </h1>
@@ -62,15 +64,37 @@ const Product = () => {
               <div className="flex gap-2">
                 {
                   productData.sizes.map((item,index)=>{
-                    return <button className='border border-gray-200 py-2 px-4 bg-gray-100' key={index}>{item}</button>
+                    return <button onClick={()=>{setSize(item)}} className={`border border-gray-200 py-2 px-4 bg-gray-100 ${item===size ? 'border-orange-500': ''}`} key={index}>{item}</button>
                   })
                 }
               </div>
               
             </div>
+            <button onClick={()=>addToCart(productData._id,size)} className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700">Add to Cart</button>
+            <hr className="mt-8 sm:w-4/5 border-gray-200"></hr>
+            <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
+              <p>100% Original Product.</p>
+              <p>Cash on delivery is available on this product</p>
+              <p>Easy return and exchange policy within 7 days.</p>
+
+            </div>
+
           </div>
 
       </div>
+      {/*Description & Review Section */}
+      <div className="mt-20 border">
+        <div className="flex">
+          <b className="border px-5 py-3 text-sm">Description</b>
+          <p className="border px-5 py-3 text-sm">Reviews(20)</p>
+        </div>
+        <div className="flex flex-col gap-4 border px-6 py-6 text-gray-600">
+          <p>An e-commerce website is an online platform that facilitates the buying and sell and Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellat, dignissimos earum maiores eos molestias, culpa at nihil quos sapiente praesentium soluta excepturi doloremque nobis exercitationem nam facilis esse dolore? Delectus?</p>
+          <p>E-commerce Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas labore illo facere similique aspernatur sapiente provident asperiores. Quia labore, hic expedita ea quis perferendis optio eius a velit ullam sed?</p>
+        </div>
+      </div>
+      {/* Related products*/}
+      <RelatedProducts category={productData.category} subCategory={productData.subCategory}/>
      
     </div>
   )  : <div className="opacit-0"></div>
