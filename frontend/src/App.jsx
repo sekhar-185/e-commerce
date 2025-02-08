@@ -14,18 +14,20 @@ import Login from './pages/Login'
 
 
 import Footer from './components/Footer'
+import SearchBar from './components/SearchBar'
 
 const App = () => {
   return (
     <div className='px-4 sm:px-[5vw] lg:px-[9vw] border-5  '>
     
      <Navbar/>
+     <SearchBar/>
      <Routes>
      <Route path='/' element={<Home/>}/>
      <Route path='/Collection' element={<Collection/>}/>
      <Route path='/About' element={<About/>}/>
       <Route path='/Contact' element={<Contact/>}/>
-      <Route path='/prodcut/:productId' element={<Product/>}/>
+      <Route path='/product/:productId' element={<Product/>}/>
       <Route path='/cart' element={<Cart/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/place-order' element={<PlaceOrder/>}/>

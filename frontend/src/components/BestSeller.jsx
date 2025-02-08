@@ -12,7 +12,7 @@ const BestSeller = () => {
     useEffect(()=>{
         const bestProuduct=products.filter((item)=>item.bestseller);
         setBestSeller(bestProuduct.slice(0,5));
-    })
+    },[])
   return (
     <div className="my-10 border">
         <div className="text-center text-3xl py-8">
