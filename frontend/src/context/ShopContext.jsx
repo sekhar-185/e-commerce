@@ -2,6 +2,7 @@ import {createContext, useEffect} from 'react';
 import {products} from '../assets/assets';
 import {useState} from 'react';
 import {toast} from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 export const ShopContext=createContext();
@@ -12,6 +13,7 @@ const ShopContextProvider=(props)=>{
     const [search,setSearch]=useState("");
     const [cartItems,setCartItems]=useState({});
     const [showSearch,setShowSearch]=useState(false);
+    const navigate=useNavigate();
 
 const addToCart =async (itemId,size)=>{
 
@@ -60,13 +62,40 @@ const getCartCount=()=>{
     }
     return totalCount;
 }
+const updateQuantity=async (itemId,size,quantity)=>
+{
+    let cartData=structuredClone(cartItems);
+    cartData[itemId][size]=quantity;
+    setCartItems(cartData);
 
+}
+
+const getCartAmount= ()=>{
+    let totalAmount=0;
+    for(const items in cartItems)
+    {
+        let itemInfo=products.find((product)=>product._id===items);
+        for(const item in cartItems[items])
+        {
+            try{
+                if(cartItems[items][item]>0)
+                {
+                    totalAmount+=itemInfo.price*cartItems[items][item];
+                }
+            }catch (error){
+
+            }
+        }
+    }
+    return totalAmount;
+}
 useEffect(()=>{
     console.log(cartItems);
 },[cartItems])
 
     const value={
-        products,currency,delivery_fee,search,setSearch,showSearch,setShowSearch,cartItems,addToCart,getCartCount
+        products,currency,delivery_fee,search,setSearch,showSearch,setShowSearch,cartItems,addToCart,getCartCount,updateQuantity,
+        getCartAmount,navigate
 
     }
 
